@@ -1,0 +1,14 @@
+{
+  "product_id": "prod_041",
+  "name": "ThirdShotHub Spectre Paddle",
+  "category": "paddles",
+  "brand": "ThirdShotHub",
+  "price": 149.99,
+  "description": "Deliberately malformed for the Deliverable 4 quarantine demonstration. This file is NOT valid JSON — the specifications object below carries a trailing comma — so it fails at json.loads() before schema validation ever runs. It is the earlier of the two quarantine paths.",
+  "specifications": {
+    "weight": "8.0 oz",
+    "grip_size": "4.25 in",
+    "core": "14 mm polypropylene honeycomb",
+  },
+  "care_instructions": "Not applicable — this product does not exist and must never reach the vector store."
+}

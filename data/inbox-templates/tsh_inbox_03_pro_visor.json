@@ -1,0 +1,18 @@
+{
+  "product_id": "prod_039",
+  "name": "ThirdShotHub Pro Visor",
+  "category": "apparel",
+  "brand": "ThirdShotHub",
+  "price": 28.99,
+  "description": "The ThirdShotHub Pro Visor is an open-crown visor sized for outdoor play in flat midday light. The underbrim is a matte charcoal rather than the usual green, which cuts the upward glare off a light-colored court surround without the color cast a green underbrim puts on a yellow ball. The sweatband is a removable, washable terry insert instead of a sewn-in band.",
+  "specifications": {
+    "brim_length": "3.25 in",
+    "underbrim": "Matte charcoal, low-glare",
+    "closure": "Hook-and-loop, 21 in to 24.5 in",
+    "sweatband": "Removable washable terry insert",
+    "fabric": "Recycled polyester microfiber, UPF 50+",
+    "weight": "2.1 oz",
+    "colorways": "Chalk, Court Slate, Baseline Navy"
+  },
+  "care_instructions": "Pull the terry insert and wash it separately; washing the visor body with the insert in place leaves salt deposits in the seam. Hand wash the body in cool water and reshape the brim while damp. Never put a visor in a dishwasher despite the common advice — the heat cycle warps the brim core permanently."
+}

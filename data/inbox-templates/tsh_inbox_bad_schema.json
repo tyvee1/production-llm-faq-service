@@ -1,0 +1,13 @@
+{
+  "product_id": "prod_040",
+  "name": "ThirdShotHub Phantom Paddle",
+  "category": "paddles",
+  "brand": "ThirdShotHub",
+  "description": "Deliberately malformed for the Deliverable 4 quarantine demonstration. This file is VALID JSON and fails one layer later, at schema validation, because the required `price` field is absent. It exercises validate_product() in src/ingestion/watcher.py rather than the JSON parser, which is a different failure mode from the parse error in tsh_inbox_bad_syntax.json.",
+  "specifications": {
+    "weight": "7.8 oz",
+    "grip_size": "4.25 in",
+    "core": "16 mm polypropylene honeycomb"
+  },
+  "care_instructions": "Not applicable — this product does not exist and must never reach the vector store."
+}

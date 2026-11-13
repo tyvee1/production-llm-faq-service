@@ -1,0 +1,17 @@
+{
+  "product_id": "prod_034",
+  "name": "ThirdShotHub Dink Hoodie",
+  "category": "apparel",
+  "brand": "ThirdShotHub",
+  "price": 64.99,
+  "description": "The ThirdShotHub Dink Hoodie is a warm-up layer cut for a paddle swing. The raglan sleeve and a gusseted underarm panel keep the hem from riding up on an overhead, and the hood is unlined so it packs flat into a paddle bag instead of bulking out the main compartment. Fabric is a midweight cotton-poly fleece that holds shape through repeated wash cycles.",
+  "specifications": {
+    "fabric": "60% cotton 40% recycled polyester fleece, 280 gsm",
+    "fit": "Athletic, raglan sleeve with gusseted underarm",
+    "sizes": "XS to 3XL",
+    "pockets": "Single kangaroo pocket with internal key loop",
+    "hood": "Unlined, flat-packing",
+    "colorways": "Court Slate, Chalk, Baseline Navy"
+  },
+  "care_instructions": "Machine wash cold on a gentle cycle, inside out, with like colors. Tumble dry low or hang dry — high heat will shrink the cotton fraction and pull the raglan seam out of line. Do not iron the printed chest mark directly; press from the inside with a cloth between the iron and the fabric. No fabric softener, which coats the fleece and reduces its breathability."
+}

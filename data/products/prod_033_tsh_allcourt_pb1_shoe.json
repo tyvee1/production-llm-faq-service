@@ -1,0 +1,18 @@
+{
+  "product_id": "prod_033",
+  "name": "ThirdShotHub Allcourt PB-1",
+  "category": "shoes",
+  "brand": "ThirdShotHub",
+  "price": 94.99,
+  "description": "The ThirdShotHub Allcourt PB-1 is a court shoe built for the lateral loads pickleball puts on the outside of the foot. A TPU lateral cage wraps the midsole so hard side-to-side pushes off the kitchen line do not roll the upper over the outsole, and the herringbone rubber is compounded for outdoor concrete rather than indoor hardwood. Sold in half sizes from 7 to 13 in a single D width.",
+  "specifications": {
+    "upper": "Engineered mesh with TPU lateral cage",
+    "midsole": "Compression-molded EVA, 8 mm heel-to-toe drop",
+    "outsole": "Herringbone non-marking rubber, outdoor compound",
+    "weight": "12.4 oz per shoe, size 9",
+    "sizes": "7 to 13 including half sizes",
+    "width": "D (standard) only",
+    "warranty": "6-month outsole durability guarantee"
+  },
+  "care_instructions": "Do not machine wash. Brush loose court grit off the outsole after outdoor play so the herringbone channels keep gripping. Air dry away from direct heat — a dryer or radiator will shrink the EVA midsole and flatten the cushioning. The 6-month outsole guarantee covers wear-through on the lateral forefoot, which is where pickleball players wear through first."
+}

@@ -1,0 +1,18 @@
+{
+  "product_id": "prod_038",
+  "name": "ThirdShotHub Thermal Paddle Sleeve",
+  "category": "bags",
+  "brand": "ThirdShotHub",
+  "price": 34.99,
+  "description": "The ThirdShotHub Thermal Paddle Sleeve is an insulated single-paddle cover for players who leave gear in a vehicle. A 4 mm closed-cell foam wall with a reflective liner slows the rate at which a paddle core reaches the temperature at which its honeycomb bond softens; in ThirdShotHub's own trunk testing it held a paddle under 100F for about ninety minutes at a 125F ambient. It is a delay, not a substitute for bringing the paddle inside.",
+  "specifications": {
+    "fits": "Standard and elongated paddles to 16.5 in",
+    "wall": "4 mm closed-cell foam with reflective liner",
+    "closure": "Full-length YKK zipper with storm flap",
+    "measured_performance": "Held paddle under 100F for ~90 minutes at 125F ambient",
+    "exterior": "420D ripstop nylon",
+    "weight": "5.1 oz",
+    "warranty": "2 years on zipper and seams"
+  },
+  "care_instructions": "Spot clean only; machine washing crushes the closed-cell foam and permanently reduces the insulation. Air out after humid sessions — the reflective liner traps moisture against a damp paddle face. Treat the stated ninety-minute figure as a delay for an unavoidable errand, not a licence to store a paddle in a hot vehicle; sustained heat damage to a core is not covered by any paddle warranty."
+}

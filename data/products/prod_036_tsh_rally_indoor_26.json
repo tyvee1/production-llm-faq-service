@@ -1,0 +1,19 @@
+{
+  "product_id": "prod_036",
+  "name": "ThirdShotHub Rally Indoor 26",
+  "category": "balls",
+  "brand": "ThirdShotHub",
+  "price": 21.99,
+  "description": "The ThirdShotHub Rally Indoor 26 is a six-pack of indoor balls drilled with 26 larger holes, which is the indoor pattern — fewer, wider holes than an outdoor ball so the ball carries on a gym floor without the wind loading an outdoor ball is built for. The seamless rotational-molded shell is softer than an outdoor ball and will crack quickly if taken onto concrete, which is the single most common misuse.",
+  "specifications": {
+    "hole_count": "26",
+    "diameter": "2.87 in",
+    "weight": "0.81 oz per ball",
+    "pack_size": "6 balls",
+    "construction": "Seamless rotational-molded LDPE",
+    "surface": "Indoor only",
+    "certification": "USA Pickleball approved for indoor sanctioned play",
+    "color": "Optic yellow"
+  },
+  "care_instructions": "Indoor only. Playing these on outdoor concrete will crack the shell within a session or two and is not covered by any return. Store between 50F and 80F — a cold ball plays dead and a hot one goes soft and out of round. Retire a ball once it is visibly out of round or has a hairline crack; a cracked ball bounces unpredictably and is not legal for sanctioned play."
+}
