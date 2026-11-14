@@ -3,7 +3,7 @@
 # WRITEUP — Production LLM FAQ Service
 
 **Submitted by:** Tyrone G. Verdell
-**Repository:** `production-llm-faq-service`  ·  **Branch:** `capstone/llmops`  ·  **Commit:** `e089324`
+**Repository:** `production-llm-faq-service`  ·  **Branch:** `capstone/llmops`
 **Evidence captured:** 2026-11-14T02:44:54.137752+00:00
 
 Every figure below was measured by running this service on a local
