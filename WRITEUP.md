@@ -3,7 +3,7 @@
 # WRITEUP — Production LLM FAQ Service
 
 **Submitted by:** Tyrone G. Verdell
-**Repository:** `production-llm-faq-service`  ·  **Branch:** `capstone/llmops`  ·  **Commit:** `7c21301`
+**Repository:** `production-llm-faq-service`  ·  **Branch:** `capstone/llmops`  ·  **Commit:** `4fbba5b`
 **Evidence captured:** 2026-11-14T02:44:54.137752+00:00
 
 Every figure below was measured by running this service on a local
@@ -215,9 +215,9 @@ reaches 0.922, inside the 0.02 band.
 
 **Deltas cited from the table above:**
 
-- **Δ context_recall, top_k 10 → 10:** 0.922 → 0.922 (+0.000) — going wider loses 0.000 here.
-- **Δ context_precision, top_k 10 → 10:** 0.750 → 0.750 (+0.000) — going wider loses 0.000 here.
-- **Δ faithfulness, top_k 10 → 10:** 0.882 → 0.882 (+0.000) — going wider loses 0.000 here.
+- **Δ context_recall, top_k 5 → 10:** 0.844 → 0.922 (+0.078) — going wider gains 0.078 here.
+- **Δ context_precision, top_k 5 → 10:** 0.752 → 0.750 (-0.002) — going wider loses 0.002 here.
+- **Δ faithfulness, top_k 5 → 10:** 0.895 → 0.882 (-0.013) — going wider loses 0.013 here.
 
 Reading those together: widening from 10 to 10
 buys little or no recall while giving up precision, and precision loss is
