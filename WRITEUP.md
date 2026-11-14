@@ -219,11 +219,9 @@ reaches 0.922, inside the 0.02 band. It is the only setting inside that band, so
 - **Δ context_precision, top_k 5 → 10:** 0.752 → 0.750 (-0.002) — going wider loses 0.002 here.
 - **Δ faithfulness, top_k 5 → 10:** 0.895 → 0.882 (-0.013) — going wider loses 0.013 here.
 
-Reading those together: moving from top_k 5 to 10 buys +0.078 context_recall and pays -0.002 context_precision. That is the trade the recommendation rests on — stated as a trade, because it is one. Precision loss is not free — it is more irrelevant text
-in the generation prompt, which is both more tokens to pay for and more
-surface for the model to wander onto. The hallucination judge in
-Deliverable 6 bounds how bad that wandering can get before it reaches a
-customer, but bounding a problem is more expensive than not creating it.
+Reading those together: moving from top_k 5 to 10 buys +0.078 context_recall, and the largest cost is faithfulness at -0.013. context_precision moves -0.002. The gain is 6× the largest cost, which is the trade the recommendation rests on — stated as a trade, because it is one.
+
+That cost is the one worth dwelling on. Faithfulness measures whether the answer's claims are supported by what was retrieved, so losing it means more unsupported sentences reaching a customer — a worse failure for a product FAQ than a missing answer. Two things make the trade acceptable anyway. A recall failure is unrecoverable: if the passage was never retrieved, no prompt and no larger model gets it back, whereas faithfulness is addressable by grounding instructions and is still high in absolute terms. And the hallucination judge in Deliverable 6 is the backstop for exactly this failure, catching unsupported answers before they ship. Bounding a problem is more expensive than not creating it, so this is a trade rather than a free win.
 
 
 ## Deliverable 3 — Tiered Model Routing
@@ -454,7 +452,7 @@ regression.
 
 **Lowest-scoring metric: `context_precision`** at 0.752.
 
-**Which configuration these numbers describe.** The evaluation's aggregate does not reproduce any single row of the Deliverable 2 sweep, so the two were measured under different conditions. The threshold below is a floor on the evaluated configuration, whatever Deliverable 2 recommends.
+**Which configuration these numbers describe.** This run reproduces the sweep's `top_k=5` row on `context_precision`, so the evaluation ran at the service default rather than at the `top_k=10` Deliverable 2 recommends. That is deliberate and worth stating plainly: the threshold below is a regression floor on the configuration in production *now*. Adopting `top_k=10` is a proposed change, and a config change invalidates a floor derived from the old one — re-baselining follows the change rather than preceding it.
 
 **Plausible cause.** `src/vectordb/chunker.py` emits exactly one chunk per product: name, description, price, the whole specifications block and the care instructions, concatenated. Retrieval therefore cannot return a passage; it returns an entire product sheet. For a question like "what does it weigh", one line of the retrieved chunk is relevant and the rest — grip size, warranty, how to wash it — is not, and context_precision scores exactly that ratio. The measured response to retrieval depth is essentially none — top_k 3 → 10 moves it 0.767 → 0.750 (-0.017). The run's own standard error on this metric is 0.074, so that is 0.2 of it — a difference smaller than the metric's own run-to-run wobble, which is the load-bearing observation here. If retrieval depth were the binding constraint, changing depth would move the metric; it does not. The ceiling is inside the chunk, set by what a chunk is made of rather than by how many are fetched. The fix is not a retrieval parameter: it is sub-product chunking, splitting the specifications block into its own embeddable unit so a weight question can retrieve a weight-sized passage.
 
