@@ -4,7 +4,7 @@
 
 **Submitted by:** Tyrone G. Verdell
 **Repository:** `production-llm-faq-service`  ·  **Branch:** `capstone/llmops`
-**Evidence captured:** 2026-11-14T02:44:54.137752+00:00
+**Evidence captured:** 2026-11-14T03:30:18.246288+00:00
 
 Every figure below was measured by running this service on a local
 machine and written into this file from the captured evidence, not
@@ -813,15 +813,15 @@ the fact.
 
 ### Part A — the cost log and the dashboard
 
-`data/cost_log.jsonl` holds **66 entries**. Five lines,
+`data/cost_log.jsonl` holds **116 entries**. Five lines,
 to show the shape:
 
 ```json
-{"timestamp": "2026-11-14T00:16:13.507535+00:00", "model": "gpt-4o-mini", "prompt_tokens": 1459, "completion_tokens": 21, "cost_usd": 0.00023145, "query_type": "hallucination_check"}
-{"timestamp": "2026-11-14T00:16:19.230578+00:00", "model": "gpt-4o", "prompt_tokens": 1548, "completion_tokens": 76, "cost_usd": 0.00463, "query_type": "complex"}
-{"timestamp": "2026-11-14T00:16:20.930594+00:00", "model": "gpt-4o-mini", "prompt_tokens": 1419, "completion_tokens": 27, "cost_usd": 0.00022904999999999998, "query_type": "hallucination_check"}
-{"timestamp": "2026-11-14T00:18:01.950819+00:00", "model": "gpt-4o-mini", "prompt_tokens": 1645, "completion_tokens": 19, "cost_usd": 0.00025814999999999996, "query_type": "simple"}
-{"timestamp": "2026-11-14T00:18:03.438347+00:00", "model": "gpt-4o-mini", "prompt_tokens": 1451, "completion_tokens": 24, "cost_usd": 0.00023205, "query_type": "hallucination_check"}
+{"timestamp": "2026-11-14T02:32:55.501586+00:00", "model": "gpt-4o-mini", "prompt_tokens": 1444, "completion_tokens": 29, "cost_usd": 0.000234, "query_type": "hallucination_check"}
+{"timestamp": "2026-11-14T02:33:06.954690+00:00", "model": "gpt-4o-mini", "prompt_tokens": 1645, "completion_tokens": 19, "cost_usd": 0.00025814999999999996, "query_type": "simple"}
+{"timestamp": "2026-11-14T02:33:08.654770+00:00", "model": "gpt-4o-mini", "prompt_tokens": 1451, "completion_tokens": 23, "cost_usd": 0.00023145000000000002, "query_type": "hallucination_check"}
+{"timestamp": "2026-11-14T02:45:12.850828+00:00", "model": "gpt-4o-mini", "prompt_tokens": 1775, "completion_tokens": 47, "cost_usd": 0.00029445, "query_type": "simple"}
+{"timestamp": "2026-11-14T02:45:14.493419+00:00", "model": "gpt-4o-mini", "prompt_tokens": 1606, "completion_tokens": 32, "cost_usd": 0.0002601, "query_type": "hallucination_check"}
 ```
 
 ![GET /cost-dashboard](docs/evidence/cost-dashboard.png)
@@ -839,8 +839,8 @@ fails the gate.
 
 | model tier | queries | avg cost / query | total |
 |---|--:|--:|--:|
-| `gpt-4o` | 13 | $0.005800 | $0.0754 |
-| `gpt-4o-mini` | 53 | $0.000200 | $0.0132 |
+| `gpt-4o` | 22 | $0.006000 | $0.1312 |
+| `gpt-4o-mini` | 94 | $0.000300 | $0.0236 |
 
 One thing the table above cannot show, and it is the part worth knowing. The hallucination judge logs its own entry per request with `query_type="hallucination_check"`, so every answered `/query` produces **two** cost rows rather than one. It does not appear as a separate line here because it runs on the same model as the simple tier — the rows merge, and the judge's share of the bill is invisible in a per-model view.
 
@@ -850,20 +850,20 @@ That shared model is a design weakness beyond accounting. A judge that shares we
 
 ```
 uv run python scripts/cost_report.py
-Records:           66
-Actual cost:       $0.0886
-Baseline (gpt-4o): $0.2955
-Savings:           $0.2069 (70.0%)
+Records:           116
+Actual cost:       $0.1548
+Baseline (gpt-4o): $0.5244
+Savings:           $0.3697 (70.5%)
 
 Per-tier summary:
-  gpt-4o       N=  13  avg=$0.0058/query  total=$0.0754
-  gpt-4o-mini  N=  53  avg=$0.0002/query  total=$0.0132
+  gpt-4o       N=  22  avg=$0.0060/query  total=$0.1312
+  gpt-4o-mini  N=  94  avg=$0.0003/query  total=$0.0236
 ```
 
 - **Baseline model:** `gpt-4o` for every request
-- **Baseline cost:** $0.2955
-- **Absolute savings:** $0.2069
-- **Percentage savings:** 70.0%
+- **Baseline cost:** $0.5244
+- **Absolute savings:** $0.3697
+- **Percentage savings:** 70.5%
 
 What that figure does and does not mean. It is a counterfactual: the cost
 log's recorded token counts repriced as though every request had hit the

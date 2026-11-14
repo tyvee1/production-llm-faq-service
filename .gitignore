@@ -11,7 +11,6 @@ __pycache__/
 # Local on-disk data stores written by the starter at runtime
 data/chroma/
 data/phoenix/
-data/cost_log.jsonl
 
 # Runtime inbox — file-watcher input + quarantine. Keep the directory
 # (via .gitkeep) but ignore any fixtures dropped in during dry runs.
@@ -22,9 +21,8 @@ data/inbox/failed/
 WRITEUP-draft.md
 WRITEUP-evidence/
 
-# Raw captured evidence. The figures that matter are rendered into
-# WRITEUP.md and the committed files under docs/evidence/; this is the
-# intermediate JSON the renderer reads, and it can be large.
+# Bulky local scratch from collecting evidence. The figures that matter
+# are in WRITEUP.md and docs/evidence/.
 .capture-evidence/
 
 # OS-level
