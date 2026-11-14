@@ -8,6 +8,7 @@ from opentelemetry.trace import StatusCode
 from src.models import QueryResponse, Source, TokenUsage
 from src.tracing.phoenix_backend import (
     flush,
+    step_span,
     trace_rag_query,
     traced_pipeline,
 )
@@ -82,11 +83,16 @@ def test_decorator_creates_spans_and_returns_response_with_trace_id():
     assert result.trace_id == format(0xABCDEF1234567890ABCDEF1234567890, "032x")
     assert result.answer == "Selkirk weighs 7.8 oz."
 
-    # Two spans started, in the right order
+    # The decorator opens the root span and nothing else. `rag_generation`
+    # is opened inside `run_pipeline`, around the call it describes. It
+    # used to be opened here, AFTER `fn` returned — correct attributes,
+    # zero duration, wrapping no work. Asserting the exact list is what
+    # stops that being reintroduced.
     span_names = [
         c.args[0] for c in tracer.start_as_current_span.call_args_list
     ]
-    assert span_names == ["rag_query", "rag_generation"]
+    assert span_names == ["rag_query"]
+    assert "rag_generation" not in span_names
 
     # Root span carries the RAG-level metadata
     root_attrs = _attrs(root_span)
@@ -100,13 +106,11 @@ def test_decorator_creates_spans_and_returns_response_with_trace_id():
     # kwargs flowed through as rag.input.* attributes
     assert root_attrs["rag.input.model"] == "gpt-4o-mini"
 
-    # Generation child span carries token + model attributes
-    gen_attrs = _attrs(gen_span)
-    assert gen_attrs["llm.model_name"] == "gpt-4o-mini"
-    assert gen_attrs["output.value"] == "Selkirk weighs 7.8 oz."
-    assert gen_attrs["llm.token_count.prompt"] == 100
-    assert gen_attrs["llm.token_count.completion"] == 20
-    assert gen_attrs["llm.token_count.total"] == 120
+    # The second mock span is never entered, because the decorator no
+    # longer opens one. Token and model attributes are now set by
+    # `run_pipeline` on the span that actually wraps `generate(...)`;
+    # `tests/rag/test_pipeline.py` covers them there.
+    assert _attrs(gen_span) == {}
 
 
 def test_decorator_records_error_and_reraises():
@@ -145,7 +149,14 @@ def test_traced_pipeline_calls_run_pipeline_through_decorator():
     ) as run:
         result = traced_pipeline("Q", model="gpt-4o", top_k=3)
 
-    run.assert_called_once_with("Q", model="gpt-4o", top_k=3)
+    # `step` is handed down so the pipeline can name its own stages.
+    # Without it the retrieval and generation spans silently vanish and
+    # the trace shows only the vendor's auto-instrumented span.
+    assert run.call_count == 1
+    assert run.call_args.args == ("Q",)
+    assert run.call_args.kwargs["model"] == "gpt-4o"
+    assert run.call_args.kwargs["top_k"] == 3
+    assert run.call_args.kwargs["step"] is step_span
     assert result.answer == "ans"
     assert result.trace_id is not None
 

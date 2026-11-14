@@ -122,6 +122,9 @@ def trace_rag_query(
     def wrapper(question: str, *args, **kwargs) -> QueryResponse:
         tracer = otel_trace.get_tracer("src.tracing.phoenix_backend")
         with tracer.start_as_current_span("rag_query") as span:
+            # CHAIN: this span orchestrates the stages rather than being
+            # one. Required by the OpenInference spec on every span.
+            span.set_attribute("openinference.span.kind", "CHAIN")
             span.set_attribute("input.value", question)
             for k, v in kwargs.items():
                 _set_str_attr(span, f"rag.input.{k}", v)
@@ -136,21 +139,15 @@ def trace_rag_query(
 
             latency_ms = (time.perf_counter() - start) * 1000
 
-            with tracer.start_as_current_span("rag_generation") as gen:
-                gen.set_attribute("llm.model_name", response.model)
-                gen.set_attribute("input.value", question)
-                gen.set_attribute("output.value", response.answer)
-                gen.set_attribute(
-                    "llm.token_count.prompt", response.tokens.prompt_tokens
-                )
-                gen.set_attribute(
-                    "llm.token_count.completion",
-                    response.tokens.completion_tokens,
-                )
-                gen.set_attribute(
-                    "llm.token_count.total", response.tokens.total
-                )
-                gen.set_attribute("rag.cost_usd", response.cost_usd)
+            # A `rag_generation` span used to be opened HERE, after `fn`
+            # had already returned. It carried the right attributes and
+            # wrapped no work: zero duration, no child, and the vendor's
+            # auto-instrumented `ChatCompletion` left as the only span
+            # actually covering the model call. The real span now lives
+            # inside `run_pipeline` around `generate(...)`. Opening a
+            # second one here would duplicate the name within one trace
+            # and make `summarize_traces` pick between two spans of which
+            # only one has token counts.
 
             span.set_attribute("output.value", response.answer)
             span.set_attribute("rag.latency_ms", latency_ms)
@@ -175,5 +172,11 @@ def trace_rag_query(
 def traced_pipeline(
     question: str, model: str | None = None, top_k: int = 5
 ) -> QueryResponse:
-    """``rag.run_pipeline`` with Phoenix instrumentation."""
-    return run_pipeline(question, model=model, top_k=top_k)
+    """``rag.run_pipeline`` with Phoenix instrumentation.
+
+    ``step_span`` is handed to the pipeline so the retrieval and
+    generation stages are wrapped where the work happens, producing
+    ``rag_retrieval`` and ``rag_generation`` as real children of
+    ``rag_query`` rather than as metadata recorded afterwards.
+    """
+    return run_pipeline(question, model=model, top_k=top_k, step=step_span)

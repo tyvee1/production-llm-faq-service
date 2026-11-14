@@ -34,10 +34,26 @@ def route_query(question: str, top_k: int = 5) -> QueryResponse:
     identical to a run where every question genuinely was complex. With
     the label on the span, the two are distinguishable after the fact.
     """
-    with step_span("rag_classification", **{"input.value": question}) as span:
-        query_type = classify(question)
-        span.set_attribute("rag.classification", query_type)
-    model = select_model(query_type)
-    response = traced_pipeline(question, model=model, top_k=top_k)
-    log_request(model, response.tokens, response.cost_usd, query_type)
-    return response
+    # One span around the whole request, so classification and the RAG
+    # pipeline land in the SAME trace. Without it they are two sibling
+    # roots — `rag_classification` in one trace, `rag_query` in another —
+    # and no single trace can show classification, retrieval and
+    # generation together, which is what an operator opens a trace to see.
+    with step_span(
+        "rag_request",
+        **{"openinference.span.kind": "CHAIN", "input.value": question},
+    ) as request_span:
+        with step_span(
+            "rag_classification",
+            **{"openinference.span.kind": "LLM", "input.value": question},
+        ) as span:
+            query_type = classify(question)
+            span.set_attribute("rag.classification", query_type)
+
+        model = select_model(query_type)
+        request_span.set_attribute("rag.classification", query_type)
+        request_span.set_attribute("rag.model", model)
+
+        response = traced_pipeline(question, model=model, top_k=top_k)
+        log_request(model, response.tokens, response.cost_usd, query_type)
+        return response
